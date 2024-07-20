@@ -5,7 +5,6 @@
 //! 
 //! Future plans include integrating a Text User Interface (TUI).
 
-
 mod models;
 mod api;
 mod utils;
