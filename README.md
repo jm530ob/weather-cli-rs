@@ -7,19 +7,19 @@ Future plans include integrating a Text User Interface (TUI).
 
 ## Installation
 
-``bash
+```bash
 cargo install weather-cli-rs
-``
+```
 
 ## Usage
 just run 
 
-``bash
+```bash
 weather-cli-rs
-``
+```
 ## Example
 
-``bash
+```bash
 Please enter your location (city name): Tokyo
 Weather in Tokyo - JP
         🢒 broken clouds 🌥
@@ -29,4 +29,4 @@ Weather in Tokyo - JP
         🢒 Humidity: 91%
         🢒 Wind speed: 2.57 m/s
         🢒 Clouds: 75%
-``
+```
