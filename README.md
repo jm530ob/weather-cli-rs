@@ -22,7 +22,7 @@ weather-cli-rs
 ```bash
 Please enter your location (city name): Tokyo
 ```
-``
+```bash
 Weather in Tokyo - JP
         🢒 broken clouds 🌥
         🢒 Temperature: 25.76°C | feels_like 26.77°C
@@ -31,4 +31,4 @@ Weather in Tokyo - JP
         🢒 Humidity: 91%
         🢒 Wind speed: 2.57 m/s
         🢒 Clouds: 75%
-``
+```
