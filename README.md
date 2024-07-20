@@ -1,4 +1,5 @@
 # weather-cli-rs
+![weather-cli-rs](https://github.com/user-attachments/assets/0875ec49-92e3-4547-a0f7-9ec44ade6a57)
 A simple weather CLI application written in Rust.
 
 This application retrieves and displays current weather information for a specified city.
