@@ -1,0 +1,17 @@
+[package]
+name = "weather-cli-rs"
+version = "0.1.0"
+authors = ["Harkabus <j.martenek@azet.sk>"]
+edition = "2021"
+description = "A simple weather CLI application written in Rust"
+license = "MIT"
+
+[dependencies]
+reqwest = { version = "0.12", features = ["json"] }
+serde = { version = "1.0", features = ["derive"] } 
+tokio = { version = "1", features = ["full"] }
+colored = "2"
+
+
+[profile.release]
+opt-level = 3
