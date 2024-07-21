@@ -25,36 +25,18 @@ pub fn print_weather(location: &GeoLocation, weather: &WeatherInfo) {
 }
 
 fn get_icon(description: &str) -> String {
-    if description == "clear sky" {
-        "☀".to_owned()
+    let has = |words: &[&str]| words.iter().any(|word| description.contains(word));
+    match description {
+        "clear sky" => "☀",
+        "few clouds" => "🌤",
+        "scattered clouds" | "overcast clouds" => "☁",
+        "tornado" => "🌪",
+        _ if has(&["rain", "drizzle"]) => "🌧",
+        _ if has(&["thunderstorm"]) => "⛈",
+        _ if has(&["snow", "sleet"]) => "🌨",
+        _ if has(&["mist", "smoke", "sand", "dust"]) => "🌫",
+        _ => "",
     }
-    else if description == "few clouds" {
-        "🌤".to_owned()
-    }
-    else if description == "scattered clouds" || description == "overcast clouds" {
-        "☁".to_owned()
-    }
-    else if description == "broken clouds" {
-        "🌥".to_owned()
-    }
-    else if description.contains("rain") || description.contains("drizzle") {
-        "🌧".to_owned()
-    }
-    else if description.contains("thunderstorm") {
-        "⛈".to_owned()
-    }
-    else if description.contains("snow") || description.contains("sleet") {
-        "🌨".to_owned()
-    }
-    else if description == ("mist") || description.contains("smoke") || description.contains("sand") 
-        || description.contains("dust") {
-            "🌫".to_owned()
-        }
-    else if description == "tornado" {
-        "🌪".to_owned()
-    }
-    else {
-        "".to_owned()
-    }
+    .to_owned()
 
  }
