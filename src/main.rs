@@ -5,26 +5,28 @@
 //! 
 //! Future plans include integrating a Text User Interface (TUI).
 
-mod models;
 mod api;
+mod models;
 mod utils;
 mod token;
+mod args;
 
+use args::Args;
+use clap::Parser;
 use models::*;
-use api::{get_location_data, get_weather_data};
-use utils::print_weather;
+use api::{get_location_data};
+// use utils::print_weather;
 
 #[tokio::main]
 pub async fn main() {
-    let coords: Vec<GeoLocation> = get_location_data()
-        .await
-        .unwrap();
-    let weather_data = get_weather_data(&coords)
-        .await
-        .unwrap();
+    let coords= get_location_data()
+        .await;
+    // let weather_data = get_weather_data(&coords)
+    //     .await
+    //     .unwrap();
     
     
-    print_weather(&coords[0], &weather_data);
-
+    // print_weather(&coords[0], &weather_data);
+    // println!("{}", args.city);
 }
 

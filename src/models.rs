@@ -2,13 +2,15 @@
 
 use serde::Deserialize;
 
-#[derive(Deserialize, Debug)]
-pub struct GeoLocation {
-    pub name: String, // city
-    pub country: String, // state code
-    pub lat: f32,
-    pub lon: f32,
-}
+
+
+// #[derive(Deserialize, Debug)]
+// pub struct GeoLocation {
+//     pub name: String, // city
+//     pub country: String, //Opetion<String> state code
+//     pub lat: f32,
+//     pub lon: f32,
+// }
 
 #[derive(Deserialize, Debug)]
 pub struct WeatherInfo {
