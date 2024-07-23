@@ -8,19 +8,18 @@
 mod api;
 mod models;
 mod utils;
-mod token;
 mod args;
 
-use args::Args;
+use args::Cli;
 use clap::Parser;
 use models::*;
-use api::{get_location_data};
+use api::{set_location_data};
 // use utils::print_weather;
 
 #[tokio::main]
 pub async fn main() {
-    let coords= get_location_data()
-        .await;
+    api::init().await;
+    // set_location_data().await.expect("Something went wrong while setting a location!");
     // let weather_data = get_weather_data(&coords)
     //     .await
     //     .unwrap();
