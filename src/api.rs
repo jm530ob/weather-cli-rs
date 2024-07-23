@@ -10,23 +10,18 @@ use colored::Colorize;
 use clap::Parser;
 use serde_json::{json, Value};
 
-use crate::args::{Cli, CommandType, KeyCommand};
+use crate::args::{Cli, CmdType, City};
 use crate::models::*;
 
 
 pub async fn init() {
-    let value = &serde_json::json!({
-        "key": "value"
-    })
-    .as_str()
-    .unwrap()
     let args = Cli::parse();
     match args.command_type {
-        CommandType::Key(cmd) => {
+        CmdType::Key(cmd) => {
             store_json(&serde_json::json!({"key": cmd.api_key}), "key_config.json");
             return
         },
-        CommandType::Set(cmd) => {
+        CmdType::Set(cmd) => {
             set_location_data(&cmd.name, cmd.country)
                 .await
                 .expect("Something went wrong while setting a location!");
@@ -41,15 +36,14 @@ pub async fn init() {
 /// Returns latitude and longitude with other useful stuff. 
 /// Visit: <https://openweathermap.org/api/geocoding-api>
 pub async fn set_location_data(city_name: &str, country: Option<String>) -> Result<(), reqwest::Error> {
-
+    let api_key_json = read_json("key_config.json").unwrap().to_string();
+    let api_key: ApiKey = serde_json::from_str(&api_key_json).unwrap();
     let mut url = format!(
-        "http://api.openweathermap.org/geo/1.0/direct?&limit=5&appid={}q={}", 
-        read_json("key_config.json")
-            .unwrap()
-            .get("key")
-            .unwrap(),
+        "http://api.openweathermap.org/geo/1.0/direct?&limit=5&appid={}&q={}", 
+        api_key.key,
         city_name
     );
+    // println!("{:?}", url);
 
     if let Some(country) = country {
         url = format!("{url},{country}")
@@ -97,8 +91,7 @@ pub fn read_json(path: &str) -> Result<Value, serde_json::Error> {
 
 // TODO: Tato funkcia bude mat jeden argument -> deserializovany json - bude obsahovat ulozenu konfiguraciu mesta
 /// Fetches weather data from the OpenWeatherMap API. 
-pub async fn get_weather_data(lat: &str, lon: &str, key: &str) -> Result<WeatherInfo, Error> {
-    let city_json = read_json("city_config.json").unwrap();
+pub async fn get_weather_data(lat: f32, lon: f32, key: &str) -> Result<WeatherInfo, Error> {
     let url = format!(
         "https://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={}&units=metric",
         lat, lon, key

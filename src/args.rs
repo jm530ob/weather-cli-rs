@@ -6,25 +6,25 @@ use clap::{Args, Parser, Subcommand};
 #[clap(author, version, about)]
 pub struct Cli {
     #[clap(subcommand)]
-    pub command_type: CommandType
+    pub command_type: CmdType
 }
 
 #[derive(Subcommand, Debug)]
-pub enum CommandType {
+pub enum CmdType {
     /// Ensure you have entered a valid API key before continuing 
-    Key(KeyCommand),
+    Key(ApiKey),
     /// Setup your city
-    Set(SetCommand)
+    Set(City)
 
 }
 
 #[derive(Args, Debug)]
-pub struct KeyCommand {
+pub struct ApiKey {
     pub api_key: Option<String>
 }
 
-#[derive(Args, Debug, Deserialize)]
-pub struct SetCommand {
+#[derive(Args, Debug)]
+pub struct City {
     /// A name of your city. E.g.: Tokyo
     #[arg(short, long)]
     pub name: String,
@@ -33,3 +33,6 @@ pub struct SetCommand {
     #[arg(short, long)]
     pub country: Option<String>,
 }
+
+// TODO set city(another enum) --city
+// set key(another enum) <apikey>

@@ -1,13 +1,15 @@
 use serde_json::Value;
 
-use crate::models::*;
+use crate::{models::*};
 
-pub fn print_weather() {
+pub async fn print_weather() {
     use crate::api::{get_weather_data, read_json};
 
-    let city_json: Value = read_json("city_data.json").unwrap();
-    let api_key: Value = read_json("key_config.json").unwrap();
-    get_weather_data(city_json.get("lat").unwrap().as_str().unwrap());
+    let city_json = read_json("city_config.json").unwrap().to_string();
+    let city: City = serde_json::from_str(&city_json).unwrap();
+    let api_key_json = read_json("key_config.json").unwrap().to_string();
+    let api_key: ApiKey = serde_json::from_str(&api_key_json).unwrap();
+    let weather = get_weather_data(city.lat, city.lon, &api_key.key).await.unwrap();
 
     let result = format!(
         "Weather in {} - {}
@@ -19,7 +21,7 @@ pub fn print_weather() {
         🢒 Wind speed: {} m/s
         🢒 Clouds: {}%
         ",
-        location.name, location.country,
+        city.name, city.country,
         weather.weather[0].description, get_icon(&weather.weather[0].description),
         weather.main.temp, weather.main.feels_like,
         weather.main.pressure,

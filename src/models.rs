@@ -3,14 +3,18 @@
 use serde::Deserialize;
 
 
+#[derive(Deserialize, Debug)]
+pub struct ApiKey {
+    pub key: String
+}
 
-// #[derive(Deserialize, Debug)]
-// pub struct GeoLocation {
-//     pub name: String, // city
-//     pub country: String, //Opetion<String> state code
-//     pub lat: f32,
-//     pub lon: f32,
-// }
+#[derive(Deserialize, Debug)]
+pub struct City {
+    pub name: String,
+    pub country: String,
+    pub lat: f32,
+    pub lon: f32
+}
 
 #[derive(Deserialize, Debug)]
 pub struct WeatherInfo {
@@ -18,7 +22,7 @@ pub struct WeatherInfo {
     pub weather: Vec<Weather>,
     pub main: Main,
     pub wind: Wind,
-    pub clouds: Clouds,
+    pub clouds: Clouds
 }
 
 #[derive(Deserialize, Debug)]
