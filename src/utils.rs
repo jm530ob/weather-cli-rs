@@ -1,15 +1,15 @@
-use serde_json::Value;
+use std::io;
+use colored::Colorize;
 
-use crate::{models::*};
+use crate::models::*;
+use crate::api::{get_weather_data, read_json};
+
 
 pub async fn print_weather() {
-    use crate::api::{get_weather_data, read_json};
 
-    let city_json = read_json("city_config.json").unwrap().to_string();
-    let city: City = serde_json::from_str(&city_json).unwrap();
-    let api_key_json = read_json("key_config.json").unwrap().to_string();
-    let api_key: ApiKey = serde_json::from_str(&api_key_json).unwrap();
-    let weather = get_weather_data(city.lat, city.lon, &api_key.key).await.unwrap();
+    let (city, key) = setup().await;
+
+    let weather = get_weather_data(city.lat, city.lon, &key.key).await.unwrap();
 
     let result = format!(
         "Weather in {} - {}
@@ -31,7 +31,33 @@ pub async fn print_weather() {
         weather.clouds.all
         
     );
+
     println!("{}", result);
+}
+
+async fn setup() -> (City, ApiKey) {
+    let city_json = read_json("city_config.json").unwrap().to_string();
+    let cities: Vec<City> = serde_json::from_str(&city_json).unwrap();
+    let city = get_city_from_opts(cities);
+    
+    let api_key_json = read_json("key_config.json").unwrap().to_string();
+    let api_key: ApiKey = serde_json::from_str(&api_key_json).unwrap();
+    (city, api_key)
+}
+
+fn get_city_from_opts(cities: Vec<City>) -> City {
+    for (i, city) in cities.iter().enumerate() {
+        println!("{}. {:?}", i + 1, city);
+    }
+    println!("{}", "Please select a city to monitor for weather updates".green());
+
+    let mut option = "".to_owned();
+    io::stdin().read_line(&mut option).expect("Invalid input");
+    let num: i32 = option.trim().parse().expect("Please enter an integer value!");
+
+    cities[(num - 1) as usize].clone()
+
+
 }
 
 fn get_icon(description: &str) -> String {
