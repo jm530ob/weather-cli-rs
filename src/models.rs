@@ -2,13 +2,12 @@
 
 use serde::Deserialize;
 
-
 #[derive(Deserialize, Debug)]
 pub struct ApiKey {
     pub key: String
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct City {
     pub name: String,
     pub country: String,

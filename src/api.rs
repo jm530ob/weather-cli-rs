@@ -12,6 +12,7 @@ use serde_json::{json, Value};
 
 use crate::args::{Cli, CmdType, City};
 use crate::models::*;
+use crate::utils::print_weather;
 
 
 pub async fn init() {
@@ -27,9 +28,7 @@ pub async fn init() {
                 .expect("Something went wrong while setting a location!");
         },
     }
-    // println!("{:?}, {:?}, {:?}", key, city_name, country);
-    // set_location_data(&args);
-    // println!("{:?}", args);
+    print_weather().await;
 
 }
 
@@ -43,7 +42,6 @@ pub async fn set_location_data(city_name: &str, country: Option<String>) -> Resu
         api_key.key,
         city_name
     );
-    // println!("{:?}", url);
 
     if let Some(country) = country {
         url = format!("{url},{country}")
