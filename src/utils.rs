@@ -20,7 +20,7 @@ pub async fn print_weather(prompt_user: bool) {
         "Weather in {} - {}
         🢒 {} {}
         🢒 Temperature: {}°C | feels_like {}°C 
-        🢒 Atmospheric pressure : {} hPa
+        🢒 Atmospheric pressure: {} hPa
         🢒 Visibility: {} m
         🢒 Humidity: {}%
         🢒 Wind speed: {} m/s
@@ -46,7 +46,7 @@ async fn setup(prompt_user: bool) -> (City, ApiKey) {
     let city_json = read_json("city_config.json").unwrap().to_string();
     let city: City;
     if prompt_user {
-        let cities: Vec<City> = serde_json::from_str(&city_json).unwrap();
+        let cities: Vec<City> = serde_json::from_str(&city_json).expect("Something went wrong. Use --help to see command tree");
         city = get_city_from_opts(cities);
     } else {
         city = serde_json::from_str(&city_json).unwrap();
@@ -69,6 +69,7 @@ fn get_city_from_opts(cities: Vec<City>) -> City {
     let num: i32 = option.trim().parse().expect("Please enter an integer value!");
 
     write_json(serde_json::to_value(cities[(num - 1) as usize].clone()).expect("Could not serialize City"), "city_config.json");
+    println!("Your preferred city has been set!");
 
     cities[(num - 1) as usize].clone()
 

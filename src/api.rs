@@ -53,7 +53,6 @@ pub async fn set_location_data(city_name: &str, country: Option<String>) -> Resu
     match response {
         Ok(res) => {
             write_json(res, "city_config.json");
-            println!("Your preferred city has been set!");
         }
         _ => eprintln!("Data could not be fetched. For more information try using --help")
     }
