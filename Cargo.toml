@@ -5,12 +5,16 @@ authors = ["Harkabus <j.martenek@azet.sk>"]
 edition = "2021"
 description = "A simple weather CLI application written in Rust"
 license = "MIT"
+repository = "https://github.com/anathrax/weather-cli-rs"
 
 [dependencies]
 reqwest = { version = "0.12", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] } 
+serde_json = "1.0.120"
 tokio = { version = "1", features = ["full"] }
 colored = "2"
+clap = { version = "4.5.9", features = ["derive"] }
+
 
 
 [profile.release]
