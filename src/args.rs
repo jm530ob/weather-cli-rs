@@ -1,4 +1,3 @@
-use serde::Deserialize;
 use clap::{Args, Parser, Subcommand};
 
 
@@ -13,13 +12,12 @@ pub struct Cli {
 pub enum CmdType {
     /// Ensure you have entered a valid API key before continuing 
     Key(ApiKey),
-    
-    /// Setup your city
+
+    /// Sets up your city
     Set(City),
 
-    /// Executes your app with the specified config
+    /// Executes the app using the stored configuration
     Go
-
 }
 
 #[derive(Args, Debug)]
@@ -37,6 +35,3 @@ pub struct City {
     #[arg(short, long)]
     pub country: Option<String>,
 }
-
-// TODO set city(another enum) --city
-// set key(another enum) <apikey>

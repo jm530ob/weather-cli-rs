@@ -2,9 +2,14 @@ use std::io;
 use colored::Colorize;
 
 use crate::models::*;
-use crate::api::{get_weather_data, read_json, store_json};
+use crate::api::{get_weather_data, read_json, write_json};
 
 
+/// Prints useful information about the weather condition.
+///
+/// # Arguments
+///
+/// * `prompt_user` - A boolean that indicates whether the configuration is already stored or not, and acts accordingly.
 pub async fn print_weather(prompt_user: bool) {
 
     let (city, key) = setup(prompt_user).await;
@@ -21,7 +26,7 @@ pub async fn print_weather(prompt_user: bool) {
         🢒 Wind speed: {} m/s
         🢒 Clouds: {}%
         ",
-        city.name, city.country,
+        city.name.yellow(), city.country.yellow(),
         weather.weather[0].description, get_icon(&weather.weather[0].description),
         weather.main.temp, weather.main.feels_like,
         weather.main.pressure,
@@ -35,6 +40,8 @@ pub async fn print_weather(prompt_user: bool) {
     println!("{}", result);
 }
 
+
+/// Loads JSON objects into a usable struct.
 async fn setup(prompt_user: bool) -> (City, ApiKey) {
     let city_json = read_json("city_config.json").unwrap().to_string();
     let city: City;
@@ -50,6 +57,7 @@ async fn setup(prompt_user: bool) -> (City, ApiKey) {
     (city, api_key)
 }
 
+/// Allows the user to select a city from up to 5 options.
 fn get_city_from_opts(cities: Vec<City>) -> City {
     for (i, city) in cities.iter().enumerate() {
         println!("{}. {:?}", i + 1, city);
@@ -60,8 +68,7 @@ fn get_city_from_opts(cities: Vec<City>) -> City {
     io::stdin().read_line(&mut option).expect("Invalid input");
     let num: i32 = option.trim().parse().expect("Please enter an integer value!");
 
-    store_json(serde_json::to_value(cities[(num - 1) as usize].clone()).expect("Could not serialize City"), "city_config.json");
-    // serde_json::
+    write_json(serde_json::to_value(cities[(num - 1) as usize].clone()).expect("Could not serialize City"), "city_config.json");
 
     cities[(num - 1) as usize].clone()
 
@@ -73,8 +80,9 @@ fn get_icon(description: &str) -> String {
     match description {
         "clear sky" => "☀",
         "few clouds" => "🌤",
-        "scattered clouds" | "overcast clouds" => "☁",
+        // "scattered clouds" | "overcast clouds" | "broken clouds" => "☁",
         "tornado" => "🌪",
+        _ if has(&["clouds"]) => "☁",
         _ if has(&["rain", "drizzle"]) => "🌧",
         _ if has(&["thunderstorm"]) => "⛈",
         _ if has(&["snow", "sleet"]) => "🌨",
