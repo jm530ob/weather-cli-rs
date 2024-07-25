@@ -1,13 +1,13 @@
 #![allow(dead_code)]
 
-use serde::Deserialize;
+use serde::{Serialize, Deserialize};
 
 #[derive(Deserialize, Debug)]
 pub struct ApiKey {
     pub key: String
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct City {
     pub name: String,
     pub country: String,

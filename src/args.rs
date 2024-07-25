@@ -13,8 +13,12 @@ pub struct Cli {
 pub enum CmdType {
     /// Ensure you have entered a valid API key before continuing 
     Key(ApiKey),
+    
     /// Setup your city
-    Set(City)
+    Set(City),
+
+    /// Executes your app with the specified config
+    Go
 
 }
 

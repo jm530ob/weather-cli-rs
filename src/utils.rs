@@ -2,12 +2,12 @@ use std::io;
 use colored::Colorize;
 
 use crate::models::*;
-use crate::api::{get_weather_data, read_json};
+use crate::api::{get_weather_data, read_json, store_json};
 
 
-pub async fn print_weather() {
+pub async fn print_weather(prompt_user: bool) {
 
-    let (city, key) = setup().await;
+    let (city, key) = setup(prompt_user).await;
 
     let weather = get_weather_data(city.lat, city.lon, &key.key).await.unwrap();
 
@@ -35,10 +35,15 @@ pub async fn print_weather() {
     println!("{}", result);
 }
 
-async fn setup() -> (City, ApiKey) {
+async fn setup(prompt_user: bool) -> (City, ApiKey) {
     let city_json = read_json("city_config.json").unwrap().to_string();
-    let cities: Vec<City> = serde_json::from_str(&city_json).unwrap();
-    let city = get_city_from_opts(cities);
+    let city: City;
+    if prompt_user {
+        let cities: Vec<City> = serde_json::from_str(&city_json).unwrap();
+        city = get_city_from_opts(cities);
+    } else {
+        city = serde_json::from_str(&city_json).unwrap();
+    }
     
     let api_key_json = read_json("key_config.json").unwrap().to_string();
     let api_key: ApiKey = serde_json::from_str(&api_key_json).unwrap();
@@ -54,6 +59,9 @@ fn get_city_from_opts(cities: Vec<City>) -> City {
     let mut option = "".to_owned();
     io::stdin().read_line(&mut option).expect("Invalid input");
     let num: i32 = option.trim().parse().expect("Please enter an integer value!");
+
+    store_json(serde_json::to_value(cities[(num - 1) as usize].clone()).expect("Could not serialize City"), "city_config.json");
+    // serde_json::
 
     cities[(num - 1) as usize].clone()
 

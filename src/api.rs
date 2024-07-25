@@ -19,7 +19,7 @@ pub async fn init() {
     let args = Cli::parse();
     match args.command_type {
         CmdType::Key(cmd) => {
-            store_json(&serde_json::json!({"key": cmd.api_key}), "key_config.json");
+            store_json(serde_json::json!({"key": cmd.api_key}), "key_config.json");
             return
         },
         CmdType::Set(cmd) => {
@@ -27,8 +27,12 @@ pub async fn init() {
                 .await
                 .expect("Something went wrong while setting a location!");
         },
+        _ => {
+            print_weather(false).await; // if command is "go" just print weather
+            return;
+        }
     }
-    print_weather().await;
+    print_weather(true).await;
 
 }
 
@@ -55,7 +59,7 @@ pub async fn set_location_data(city_name: &str, country: Option<String>) -> Resu
 
     match response {
         Ok(res) => {
-            store_json(&res, "city_config.json");
+            store_json(res, "city_config.json");
             println!("Your preferred city has been set!");
         }
         _ => eprintln!("Data could not be fetched. For more information try using --help")
@@ -65,7 +69,7 @@ pub async fn set_location_data(city_name: &str, country: Option<String>) -> Resu
 
 }
 
-pub fn store_json(args: &Value, path: &str) {
+pub fn store_json(args: Value, path: &str) {
     let mut file = File::create(path);
 
     match &mut file {
