@@ -36,8 +36,10 @@ $ weather-cli-rs <COMMAND>
 
 ```
 $ weather-cli-rs key <API_KEY>
-$ weather-cli-rs set -name "Kyoto" -country "JP"
+$ weather-cli-rs set --name "Kyoto" --country "JP"
 ```
+Note: The `--country` (`-c`) flag is optional. However, you will likely be prompted with several options to select your city
+
 ```text
 Weather in Kyoto - JP
         🢒 scattered clouds ☁
