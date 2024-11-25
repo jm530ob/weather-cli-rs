@@ -1,8 +1,8 @@
 # weather-cli-rs
-![GitHub last commit](https://img.shields.io/github/last-commit/anathrax/weather-cli-rs)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/anathrax/weather-cli-rs)
+![GitHub last commit](https://img.shields.io/github/last-commit/jm530ob/weather-cli-rs)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/jm530ob/weather-cli-rs)
 ![Crates.io Total Downloads](https://img.shields.io/crates/d/weather-cli-rs)
-![GitHub Repo stars](https://img.shields.io/github/stars/anathrax/weather-cli-rs)
+![GitHub Repo stars](https://img.shields.io/github/stars/jm530ob/weather-cli-rs)
 <img src="https://github.com/user-attachments/assets/287c2cfe-648b-4948-bd98-d40259dffc9b" width="600" />
 
 A simple weather CLI application written in Rust.
